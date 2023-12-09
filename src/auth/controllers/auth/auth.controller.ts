@@ -9,14 +9,14 @@ import {
 import { AuthService } from 'src/auth/services/auth/auth.service';
 import { UsersService } from 'src/users/services/users/users.service';
 import { compare } from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { LogInDto } from 'src/auth/dto/LogIn.dto';
 import { decodeAccessToken } from 'src/utils/middleware/decode-token';
 import { RefreshTokenDto } from 'src/auth/dto/RefreshToken.dto';
 
 const SECRET_KEY = 'i_dont_have_the_secret_key';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -28,8 +28,15 @@ export class AuthController {
     const initialUser = await this.userService.findUserByUsername(loginCredential.username);
     if (!initialUser?.id) throw new HttpException('Wrong Username!', HttpStatus.UNAUTHORIZED);
   
-    const salt = 10;
-    const isPasswordPassed = await compare(loginCredential.password, salt);
+    const isPasswordPassed = await new Promise((resolve, reject) => {
+        compare(loginCredential.password, initialUser.hashedPassword, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
     if (!isPasswordPassed) throw new HttpException('Wrong Password!', HttpStatus.UNAUTHORIZED);
 
     /** Generate Access Token expired every 1 hour */
@@ -47,7 +54,6 @@ export class AuthController {
       SECRET_KEY,
       { expiresIn: '60m' },
     );
-
     /** Generate Refresh Token */
     const refreshToken = await jwt.sign(
       {
@@ -88,6 +94,7 @@ export class AuthController {
         lastName: user.lastName,
         lastLoginDate: Date.now(),
       },
+      SECRET_KEY,
       { expiresIn: '60m' },
     );
 
@@ -101,6 +108,7 @@ export class AuthController {
         lastLoginDate: Date.now(),
         accessToken,
       },
+      SECRET_KEY,
     );
 
     await this.authService.login(user.id, accessToken, newRefreshToken);

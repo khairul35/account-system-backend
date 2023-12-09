@@ -1,4 +1,7 @@
-export const UserMapper = (data) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserMapper = void 0;
+const UserMapper = (data) => {
     return {
         id: data?.id || null,
         registrationDate: data?.registration_date || null,
@@ -13,3 +16,5 @@ export const UserMapper = (data) => {
         address: data?.address || null,
     };
 };
+exports.UserMapper = UserMapper;
+//# sourceMappingURL=User.js.map

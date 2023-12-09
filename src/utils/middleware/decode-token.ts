@@ -26,7 +26,7 @@ interface DecodedRefreshToken {
 export function decodeAccessToken(token: string): DecodedToken | null {
     try {
         if (!token) throw new HttpException('No Access Token', HttpStatus.UNAUTHORIZED)
-        const decoded: DecodedToken = jwt.verify(token, SECRET_KEY);
+        const decoded: DecodedToken | any = jwt.verify(token, SECRET_KEY);
         return decoded;
     } catch (error) {
         throw new HttpException(error, HttpStatus.UNAUTHORIZED);
@@ -36,7 +36,7 @@ export function decodeAccessToken(token: string): DecodedToken | null {
 export function decodeRefreshToken(token: string): DecodedRefreshToken | null {
     try {
         if (!token) throw new HttpException('No Access Token', HttpStatus.UNAUTHORIZED)
-        const decoded: DecodedToken = jwt.verify(token, SECRET_KEY);
+        const decoded: DecodedToken | any = jwt.verify(token, SECRET_KEY);
         return decoded;
     } catch (error) {
         throw new HttpException(error, HttpStatus.UNAUTHORIZED);

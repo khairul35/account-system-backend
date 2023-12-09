@@ -17,15 +17,19 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const User_1 = require("../../../typeorm/entities/User");
 const typeorm_2 = require("typeorm");
+const User_2 = require("../../mapper/User");
 let UsersService = class UsersService {
     constructor(UserRepository) {
         this.UserRepository = UserRepository;
     }
-    findUsers() {
-        return this.UserRepository.find();
+    async findUsers() {
+        return (await this.UserRepository.find()).map(User_2.UserMapper);
     }
-    findUserById(id) {
-        return this.UserRepository.findOne({ where: { id } });
+    async findUserById(id) {
+        return (0, User_2.UserMapper)(await this.UserRepository.findOne({ where: { id } }));
+    }
+    async findUserByUsername(username) {
+        return (0, User_2.UserMapper)(await this.UserRepository.findOne({ where: { username } }));
     }
     createUser(userDetails) {
         const newUser = this.UserRepository.create({ ...userDetails });

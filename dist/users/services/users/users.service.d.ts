@@ -4,8 +4,45 @@ import { Repository } from 'typeorm';
 export declare class UsersService {
     private UserRepository;
     constructor(UserRepository: Repository<User>);
-    findUsers(): Promise<User[]>;
-    findUserById(id: number): Promise<User>;
+    findUsers(): Promise<{
+        id: any;
+        registrationDate: any;
+        lastLoginDate: any;
+        username: any;
+        hashedPassword: any;
+        email: any;
+        role: any;
+        accountStatus: any;
+        firstName: any;
+        lastName: any;
+        address: any;
+    }[]>;
+    findUserById(id: number): Promise<{
+        id: any;
+        registrationDate: any;
+        lastLoginDate: any;
+        username: any;
+        hashedPassword: any;
+        email: any;
+        role: any;
+        accountStatus: any;
+        firstName: any;
+        lastName: any;
+        address: any;
+    }>;
+    findUserByUsername(username: string): Promise<{
+        id: any;
+        registrationDate: any;
+        lastLoginDate: any;
+        username: any;
+        hashedPassword: any;
+        email: any;
+        role: any;
+        accountStatus: any;
+        firstName: any;
+        lastName: any;
+        address: any;
+    }>;
     createUser(userDetails: CreateUserParams): Promise<User>;
     updateUser(id: number, userDetails: UpdateUserParams): Promise<import("typeorm").UpdateResult>;
     deleteUser(id: number): Promise<import("typeorm").DeleteResult>;

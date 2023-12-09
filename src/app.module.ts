@@ -4,10 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
 import { UsersModule } from './users/users.module';
-import { UsersController } from './users/controllers/users/users.controller';
-import { AuthController } from './auth/controllers/auth/auth.controller';
 import { Auth } from './typeorm/entities/Auth';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     // Configuring TypeOrm with mysql
@@ -19,11 +17,12 @@ import { Auth } from './typeorm/entities/Auth';
       password: 'Noneedpassword23!',
       database: 'Production',
       entities: [User, Auth],
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
+    AuthModule,
   ],
-  controllers: [AppController, UsersController, AuthController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

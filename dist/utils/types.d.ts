@@ -1,3 +1,7 @@
+export type LogInParams = {
+    username: string;
+    password: string;
+};
 export type CreateUserParams = {
     username: string;
     password_hash: string;

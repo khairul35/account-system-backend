@@ -13,7 +13,7 @@ import { UsersService } from 'src/users/services/users/users.service';
 import { hash } from 'bcrypt';
 import { UpdateUserDto } from 'src/users/dto/UpdateUser.dto';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
